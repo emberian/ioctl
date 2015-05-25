@@ -101,21 +101,25 @@ macro_rules! ioctl {
     );
 }
 
+/// Extracts the "direction" (read/write/none) from an encoded ioctl command.
 #[inline(always)]
 pub fn ioc_dir(nr: u32) -> u8 {
     ((nr >> DIRSHIFT) & DIRMASK) as u8
 }
 
+/// Extracts the type from an encoded ioctl command.
 #[inline(always)]
 pub fn ioc_type(nr: u32) -> u32 {
     (nr >> TYPESHIFT) & TYPEMASK
 }
 
+/// Extracts the ioctl number from an encoded ioctl command.
 #[inline(always)]
 pub fn ioc_nr(nr: u32) -> u32 {
     (nr >> NRSHIFT) & NRMASK
 }
 
+/// Extracts the size from an encoded ioctl command.
 #[inline(always)]
 pub fn ioc_size(nr: u32) -> u32 {
     ((nr >> SIZESHIFT) as u32) & SIZEMASK
