@@ -70,12 +70,12 @@ macro_rules! iorw {
 #[macro_export]
 macro_rules! ioctl {
     (read $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: &mut $ty) {
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) {
             $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as ::libc::c_ulong, val);
         }
     );
     (write $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: c_int, val: &$ty) {
+        pub unsafe fn $name(fd: c_int, val: *const $ty) {
             $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as ::libc::c_ulong, val);
         }
     );
