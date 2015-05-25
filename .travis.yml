@@ -1,2 +1,19 @@
 language: rust
-script: cargo test
+sudo: required
+rust:
+- nightly
+- beta
+- stable
+before_script:
+- pip install 'travis-cargo<0.2' --user && export PATH=$HOME/.local/bin:$PATH
+script:
+- |
+  travis-cargo build &&
+  travis-cargo test &&
+  travis-cargo bench &&
+  travis-cargo doc
+after_success:
+- travis-cargo --only beta doc-upload
+env:
+  global:
+    secure: dsr97P7qrcRC0Kn0VGEB6BW1AUGS2/QwGyx4k+gGsD98OBXZpozf9ktVZZ7jWk2vb7HxsnYI2q9AJeL6L3BlH8Xr2q1rpDGSedgRjIya0jKv58KwjLzZ5FByv8lc1IM8GCywOFIGxvt4eSqkRiiCtBOONzRsT6X59isvDeWPi/75SmNDA9Lb7/8mmGqUFIlO+S9DGgzxrfuLdiPuUxJg7nDoSxqc/muKUHb5H1IXdZmgV0Y7+qoK9Q0zidjcossqS7YsQOGD4dOvwYH9ReS4xv3B1RgjV33q0FvxeMDt+6OpZwTBuQXlNJDumfE/U+UPH3baDnPD1XCOj0kcQFYkSg7MqUNggufxp4swSNmOsyLhBK+2d1jaC8ggehnjwwiwFofnBkAlHg8xwDwZxQAPdiFX3ORVF+esM4qOuUkh40Rtb53/Q/UqEibVjdBwTVD2p88hAaWZdhpaewsNlJcb2Yf71pQRT67B7f1IWtiKL2w67KET0NH/WtiZONaCv0XZoo1CDBXrvmIoa+EqizZVj9gBANBYcYDZYSIoajsR5uK51xy8WExL1ukuOI9FYFPALqO2IHCW2ZPEuDF0fzTmufzxwbNu5k9IoblUycjQ8jh5mRp00nzBj87DUlLFWBoGtsGL0GAixbO29lFUdAMQX/9kRRt0f2jLCI3kdwTACOo=
