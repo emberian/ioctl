@@ -11,6 +11,26 @@ except SPARC and Alpha. Other platforms welcome!
 
 This library is pretty low-level and messy. `ioctl` is not fun.
 
+What is an `ioctl`?
+===================
+
+The `ioctl` function is the grab-bag system call on POSIX systems. Don't want
+to add a new syscall? Make it an `ioctl`! `ioctl` refers to both the syscall,
+and the commands that can be send with it. `ioctl` stands for "IO control",
+and the commands are always sent to a file descriptor.
+
+How do I get the magic numbers?
+===============================
+
+Look at your system's headers. For example, `/usr/include/linxu/input.h` has a
+lot of lines defining macros which use `_IOR`, `_IOW`, `_IOC`, and `_IORW`.
+These macros correspond to the `ior!`, `iow!`, `ioc!`, and `iorw!` macros
+defined in this crate. Additionally, there is the `ioctl!` macro for
+creating a wrapper around `ioctl` that is somewhat more type-safe.
+
+Most `ioctl`s have no or little documentation. You'll need to scrounge through
+the source to figure out what they do and how they should be used.
+
 Example
 =======
 
