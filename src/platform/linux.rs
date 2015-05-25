@@ -1,48 +1,74 @@
+#[doc(hidden)]
 pub const NRBITS: u32 = 8;
+#[doc(hidden)]
 pub const TYPEBITS: u32 = 8;
 
 #[cfg(target_arch = "mips")]
 mod consts {
+    #[doc(hidden)]
     pub const NONE: u8 = 1;
+    #[doc(hidden)]
     pub const READ: u8 = 2;
+    #[doc(hidden)]
     pub const WRITE: u8 = 4;
+    #[doc(hidden)]
     pub const SIZEBITS: u8 = 13;
+    #[doc(hidden)]
     pub const DIRBITS: u8 = 3;
 }
 #[cfg(target_arch = "powerpc")]
 mod consts {
+    #[doc(hidden)]
     pub const NONE: u8 = 1;
+    #[doc(hidden)]
     pub const READ: u8 = 2;
+    #[doc(hidden)]
     pub const WRITE: u8 = 4;
+    #[doc(hidden)]
     pub const SIZEBITS: u8 = 13;
+    #[doc(hidden)]
     pub const DIRBITS: u8 = 3;
 }
 #[cfg(not(any(target_arch = "powerpc", target_arch = "mips")))]
 mod consts {
+    #[doc(hidden)]
     pub const NONE: u8 = 0;
+    #[doc(hidden)]
     pub const READ: u8 = 2;
+    #[doc(hidden)]
     pub const WRITE: u8 = 1;
+    #[doc(hidden)]
     pub const SIZEBITS: u8 = 14;
+    #[doc(hidden)]
     pub const DIRBITS: u8 = 2;
 }
 
+#[doc(hidden)]
 pub use self::consts::*;
 
+#[doc(hidden)]
 pub const NRSHIFT: u32 = 0;
+#[doc(hidden)]
 pub const TYPESHIFT: u32 = NRSHIFT + NRBITS as u32;
+#[doc(hidden)]
 pub const SIZESHIFT: u32 = TYPESHIFT + SIZEBITS as u32;
+#[doc(hidden)]
 pub const DIRSHIFT: u32 = SIZESHIFT + DIRBITS as u32;
 
+#[doc(hidden)]
 pub const NRMASK: u32 = (1 << NRBITS) - 1;
+#[doc(hidden)]
 pub const TYPEMASK: u32 = (1 << TYPEBITS) - 1;
+#[doc(hidden)]
 pub const SIZEMASK: u32 = (1 << SIZEBITS) - 1;
+#[doc(hidden)]
 pub const DIRMASK: u32 = (1 << DIRBITS) - 1;
 
 /// Encode an ioctl command.
 #[macro_export]
 macro_rules! ioc {
     ($dir:expr, $ty:expr, $nr:expr, $sz:expr) => (
-    ($dir as u32) << $crate::DIRBITS |
+        ($dir as u32) << $crate::DIRBITS |
         ($ty as u32) << $crate::TYPEBITS |
         ($nr as u32) << $crate::NRSHIFT |
         ($sz as u32) << $crate::SIZESHIFT)
@@ -73,32 +99,32 @@ macro_rules! ioctl {
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) -> $crate::libc::c_int {
             $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
         }
-    );
+        );
     (write $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty) -> $crate::libc::c_int {
             $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
         }
-    );
+        );
     (readwrite $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) -> $crate::libc::c_int {
             $crate::ioctl(fd, iorw!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
         }
-    );
+        );
     (read buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty, len: usize) -> $crate::libc::c_int {
             $crate::ioctl(fd, ior!($ioty, $nr, len) as $crate::libc::c_ulong, val)
         }
-    );
+        );
     (write buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty, len: usize) -> $crate::libc::c_int {
             $crate::ioctl(fd, ior!($ioty, $nr, len) as $crate::libc::c_ulong, val)
         }
-    );
+        );
     (readwrite buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty, len: usize) -> $crate::libc::c_int {
             $crate::ioctl(fd, iorw!($ioty, $nr, len) as $crate::libc::c_ulong, val)
         }
-    );
+        );
 }
 
 /// Extracts the "direction" (read/write/none) from an encoded ioctl command.
@@ -125,7 +151,11 @@ pub fn ioc_size(nr: u32) -> u32 {
     ((nr >> SIZESHIFT) as u32) & SIZEMASK
 }
 
+#[doc(hidden)]
 pub const IN: u32 = (WRITE as u32) << DIRSHIFT;
+#[doc(hidden)]
 pub const OUT: u32 = (READ as u32) << DIRSHIFT;
+#[doc(hidden)]
 pub const INOUT: u32 = ((READ|WRITE) as u32) << DIRSHIFT;
+#[doc(hidden)]
 pub const SIZE_MASK: u32 = SIZEMASK << SIZESHIFT;
