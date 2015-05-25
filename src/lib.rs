@@ -14,6 +14,7 @@ pub use platform::*;
 pub use real_libc as libc;
 
 extern "C" {
+    #[doc(hidden)]
     pub fn ioctl(fd: libc::c_int, req: libc::c_ulong, ...) -> libc::c_int;
 }
 
