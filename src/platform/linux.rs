@@ -1,5 +1,5 @@
-const NRBITS: u32 = 8;
-const TYPEBITS: u32 = 8;
+pub const NRBITS: u32 = 8;
+pub const TYPEBITS: u32 = 8;
 
 #[cfg(target_arch = "mips")]
 mod consts {
@@ -42,61 +42,61 @@ pub const DIRMASK: u32 = (1 << DIRBITS) - 1;
 #[macro_export]
 macro_rules! ioc {
     ($dir:expr, $ty:expr, $nr:expr, $sz:expr) => (
-    ($dir as u32) << DIRBITS |
-        ($ty as u32) << TYPEBITS |
-        ($nr as u32) << NRSHIFT |
-        ($sz as u32) << SIZESHIFT)
+    ($dir as u32) << $crate::DIRBITS |
+        ($ty as u32) << $crate::TYPEBITS |
+        ($nr as u32) << $crate::NRSHIFT |
+        ($sz as u32) << $crate::SIZESHIFT)
 }
 
 /// Encode an ioctl command that reads.
 #[macro_export]
 macro_rules! ior {
-    ($ty:expr, $nr:expr, $sz:expr) => (ioc!(READ, $ty, $nr, $sz))
+    ($ty:expr, $nr:expr, $sz:expr) => (ioc!($crate::READ, $ty, $nr, $sz))
 }
 
 /// Encode an ioctl command that writes.
 #[macro_export]
 macro_rules! iow {
-    ($ty:expr, $nr:expr, $sz:expr) => (ioc!(WRITE, $ty, $nr, $sz))
+    ($ty:expr, $nr:expr, $sz:expr) => (ioc!($crate::WRITE, $ty, $nr, $sz))
 }
 
 /// Encode an ioctl command that both reads and writes.
 #[macro_export]
 macro_rules! iorw {
-    ($ty:expr, $nr:expr, $sz:expr) => (ioc!(READ|WRITE, $ty, $nr, $sz))
+    ($ty:expr, $nr:expr, $sz:expr) => (ioc!($crate::READ|$crate::WRITE, $ty, $nr, $sz))
 }
 
 /// Declare a wrapper function around an ioctl.
 #[macro_export]
 macro_rules! ioctl {
     (read $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) {
-            $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as ::libc::c_ulong, val);
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) -> $crate::libc::c_int {
+            $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
         }
     );
     (write $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty) {
-            $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as ::libc::c_ulong, val);
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty) -> $crate::libc::c_int {
+            $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
         }
     );
     (readwrite $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) {
-            $crate::ioctl(fd, iorw!($ioty, $nr, ::std::mem::size_of::<$ty>()) as ::libc::c_ulong, val);
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) -> $crate::libc::c_int {
+            $crate::ioctl(fd, iorw!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
         }
     );
     (read buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty, len: usize) {
-            $crate::ioctl(fd, ior!($ioty, $nr, len) as ::libc::c_ulong, val);
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty, len: usize) -> $crate::libc::c_int {
+            $crate::ioctl(fd, ior!($ioty, $nr, len) as $crate::libc::c_ulong, val)
         }
     );
     (write buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty, len: usize) {
-            $crate::ioctl(fd, ior!($ioty, $nr, len) as ::libc::c_ulong, val);
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty, len: usize) -> $crate::libc::c_int {
+            $crate::ioctl(fd, ior!($ioty, $nr, len) as $crate::libc::c_ulong, val)
         }
     );
     (readwrite buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
-        pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty, len: usize) {
-            $crate::ioctl(fd, iorw!($ioty, $nr, len) as ::libc::c_ulong, val);
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *const $ty, len: usize) -> $crate::libc::c_int {
+            $crate::ioctl(fd, iorw!($ioty, $nr, len) as $crate::libc::c_ulong, val)
         }
     );
 }

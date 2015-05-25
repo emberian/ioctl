@@ -1,4 +1,4 @@
-extern crate libc;
+extern crate libc as real_libc;
 #[macro_use]
 extern crate bitflags;
 
@@ -8,6 +8,10 @@ extern crate bitflags;
 mod platform;
 
 pub use platform::*;
+
+/// A hack to get the macros to work nicely.
+#[doc(hidden)]
+pub use real_libc as libc;
 
 extern "C" {
     pub fn ioctl(fd: libc::c_int, req: libc::c_ulong, ...) -> libc::c_int;
