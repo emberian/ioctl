@@ -79,6 +79,16 @@ macro_rules! ioctl {
             $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as ::libc::c_ulong, val);
         }
     );
+    (read buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
+        pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty, len: usize) {
+            $crate::ioctl(fd, ior!($ioty, $nr, len) as ::libc::c_ulong, val);
+        }
+    );
+    (write buf $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
+        pub unsafe fn $name(fd: c_int, val: *const $ty, len: usize) {
+            $crate::ioctl(fd, ior!($ioty, $nr, len) as ::libc::c_ulong, val);
+        }
+    );
 }
 
 #[inline(always)]
