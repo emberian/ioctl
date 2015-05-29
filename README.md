@@ -19,6 +19,17 @@ to add a new syscall? Make it an `ioctl`! `ioctl` refers to both the syscall,
 and the commands that can be send with it. `ioctl` stands for "IO control",
 and the commands are always sent to a file descriptor.
 
+What does this library support?
+===============================
+
+This library provides the `ioctl!` macro, for binding `ioctl`s. It also tries
+to bind every `ioctl` supported by the system with the said macro, but there
+many `ioctl`s require some amount of manual work to support (usually by
+providing `struct`s or other types) that this library does not support yet.
+
+Additionally, in `etc`, there are scripts for scraping system headers for
+`ioctl` definitions, and generating calls to `ioctl!` corresponding to them.
+
 How do I get the magic numbers?
 ===============================
 
