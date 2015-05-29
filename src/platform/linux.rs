@@ -224,6 +224,18 @@ const CM_IOC_MAGIC: u32 = b'c' as u32;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
+pub struct input_event {
+    pub time: ::libc::timeval,
+    pub _type: u16,
+    pub code: u16,
+    pub value: i32,
+}
+impl ::std::default::Default for input_event {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
 pub struct input_id {
     pub bustype: u16,
     pub vendor: u16,
