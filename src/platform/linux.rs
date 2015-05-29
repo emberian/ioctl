@@ -106,6 +106,11 @@ macro_rules! iorw {
 /// Declare a wrapper function around an ioctl.
 #[macro_export]
 macro_rules! ioctl {
+    (bad $name:ident with $nr:expr) => (
+        pub unsafe fn $name(fd: $crate::libc::c_int, data: *mut u8) -> $crate::libc::c_int {
+            $crate::ioctl(fd, $nr as $crate::libc::c_ulong, data)
+        }
+    );
     (none $name:ident with $ioty:expr, $nr:expr) => (
         pub unsafe fn $name(fd: $crate::libc::c_int) -> $crate::libc::c_int {
             $crate::ioctl(fd, io!($ioty, $nr) as $crate::libc::c_ulong)
