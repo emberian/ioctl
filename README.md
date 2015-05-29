@@ -23,7 +23,7 @@ What does this library support?
 ===============================
 
 This library provides the `ioctl!` macro, for binding `ioctl`s. It also tries
-to bind every `ioctl` supported by the system with the said macro, but there
+to bind every `ioctl` supported by the system with said macro, but
 many `ioctl`s require some amount of manual work to support (usually by
 providing `struct`s or other types) that this library does not support yet.
 
