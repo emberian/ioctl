@@ -51,7 +51,8 @@ utys = {
         "char": "::libc::c_uchar",
 }
 
-known_structs = ["input_id"]
+known_structs = ["input_id", "ff_effect", "ff_trigger", "ff_replay"]
+
 manually_bound = ["EVIOCGNAME", "EVIOCGPHYS", "EVIOCGUNIQ", "EVIOCGPROP",
 "EVIOCGMTSLOTS", "EVIOCGKEY", "EVIOCGLED", "EVIOCGSND", "EVIOCGSW",
 "EVIOCGBIT", "EVIOCGABS", "EVIOCSABS", "EVIOCGRAB", "EVIOCREVOKE",
