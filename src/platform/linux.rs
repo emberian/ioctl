@@ -180,3 +180,46 @@ pub const OUT: u32 = (READ as u32) << DIRSHIFT;
 pub const INOUT: u32 = ((READ|WRITE) as u32) << DIRSHIFT;
 #[doc(hidden)]
 pub const SIZE_MASK: u32 = SIZEMASK << SIZESHIFT;
+
+const CZIOC: u32 = (b'M' as u32) << 8;
+const WATCHDOG_IOCTL_BASE: u32 = b'W' as u32;
+const BASE_VIDIOC_PRIVATE: u32 = 192;
+const USBTMC_IOC_NR: u32 = 91;
+const UBI_VOL_IOC_MAGIC: u32 = b'O' as u32;
+const UBI_IOC_MAGIC: u32 = b'o' as u32;
+const UBI_CTRL_IOC_MAGIC: u32 = b'o' as u32;
+const SPI_IOC_MAGIC: u32 = b'k' as u32;
+const SIOCPROTOPRIVATE: u32 = 0x89E0;
+const SIOCDEVPRIVATE: u32 = 0x89F0;
+const MGSL_MAGIC_IOC: u32 = b'm' as u32;
+const DRM_IOCTL_BASE: u32 = b'd' as u32;
+const DRM_COMMAND_BASE: u32 = 0x40;
+const BTRFS_IOCTL_MAGIC: u32 = 0x94;
+const BTRFS_LABEL_SIZE: usize = 256;
+//const SIOCPARM_MASK: u32 = 0x1fff;
+
+#[cfg(not(target_arch = "mips"))]
+const TIOCM_RNG: u32 = 0x080;
+#[cfg(target_arch = "mips")]
+const TIOCM_RNG: u32 = 0x200;
+
+#[cfg(not(target_arch = "mips"))]
+const TIOCM_CAR: u32 = 0x040;
+#[cfg(target_arch = "mips")]
+const TIOCM_CAR: u32 = 0x100;
+
+const FIONREAD: u32 = 0x541B;
+const ATMIOC_ITF: u32 = 0x80;
+const TIOCOUTQ: u32 = 0x5411;
+const ATMIOC_CLIP: u32 = 0xe0;
+const RFKILL_IOC_NOINPUT: u32 = 1;
+const RFKILL_IOC_MAGIC: u32 = b'R' as u32;
+const IFNAMSIZ: usize = 16;
+const PCIIOC_BASE: u32 = (b'P' as u32) << 24 | (b'C' as u32) << 16 | (b'I' as u32) << 8;
+const DECNET_IOCTL_BASE: u32 = 0x89;
+const ABS_MAX: usize = 0x3f;
+const ABS_CNT: usize = ABS_MAX+1;
+const CXL_MAGIC: u32 = 0xCA;
+const CM_IOC_MAGIC: u32 = b'c' as u32;
+
+include!("linux-generated.rs");
