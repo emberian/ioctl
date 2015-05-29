@@ -79,6 +79,12 @@ macro_rules! ioc {
         ($sz as u32) << $crate::SIZESHIFT)
 }
 
+/// Encode an ioctl command that has no associated data.
+#[macro_export]
+macro_rules! io {
+    ($ty:expr, $nr:expr) => (ioc!($crate::NONE, $ty, $nr, 0))
+}
+
 /// Encode an ioctl command that reads.
 #[macro_export]
 macro_rules! ior {
@@ -100,6 +106,11 @@ macro_rules! iorw {
 /// Declare a wrapper function around an ioctl.
 #[macro_export]
 macro_rules! ioctl {
+    (none $name:ident with $ioty:expr, $nr:expr) => (
+        pub unsafe fn $name(fd: $crate::libc::c_int) -> $crate::libc::c_int {
+            $crate::ioctl(fd, io!($ioty, $nr) as $crate::libc::c_ulong)
+        }
+    );
     (read $name:ident with $ioty:expr, $nr:expr; $ty:ty) => (
         pub unsafe fn $name(fd: $crate::libc::c_int, val: *mut $ty) -> $crate::libc::c_int {
             $crate::ioctl(fd, ior!($ioty, $nr, ::std::mem::size_of::<$ty>()) as $crate::libc::c_ulong, val)
