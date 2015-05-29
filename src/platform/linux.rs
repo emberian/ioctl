@@ -222,4 +222,12 @@ const ABS_CNT: usize = ABS_MAX+1;
 const CXL_MAGIC: u32 = 0xCA;
 const CM_IOC_MAGIC: u32 = b'c' as u32;
 
+#[repr(C)]
+pub struct input_id {
+    bustype: u16,
+    vendor: u16,
+    product: u16,
+    version: u16,
+}
+
 include!("linux-generated.rs");

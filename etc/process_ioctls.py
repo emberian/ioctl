@@ -51,7 +51,12 @@ utys = {
         "char": "::libc::c_uchar",
 }
 
-known_structs = []
+known_structs = ["input_id"]
+manually_bound = ["EVIOCGNAME", "EVIOCGPHYS", "EVIOCGUNIQ", "EVIOCGPROP",
+"EVIOCGMTSLOTS", "EVIOCGKEY", "EVIOCGLED", "EVIOCGSND", "EVIOCGSW",
+"EVIOCGBIT", "EVIOCGABS", "EVIOCSABS", "EVIOCGRAB", "EVIOCREVOKE",
+"EVIOCSCLOCKID"]
+
 bad_recovery = {}
 
 def translate(ty):
@@ -61,7 +66,7 @@ def translate(ty):
         return "*mut " + translate(ty[:-1])
     elif len(ty) == 2:
         if ty[0] == "struct":
-            return "Struct_%s" % ty[1]
+            return "/*struct*/ %s" % ty[1]
         elif ty[0] == "unsigned":
             return utys[ty[1]]
         else:
@@ -84,7 +89,9 @@ def process(ioctl):
     cmd = rhs[0]
     body = rhs[2:-1]
 
-    if cmd == "_IO":
+    if name in manually_bound:
+        return
+    elif cmd == "_IO":
         print("ioctl!(none %s with %s, %s);" % (name.lower(), translate_type_code(body[0]),
             body[2]))
     elif cmd == '_IOR' or cmd == '_IOW' or cmd == '_IOWR':
@@ -94,7 +101,7 @@ def process(ioctl):
             second = body[2]
             ty = body[4:]
             ty = translate(ty)
-            if "FIXME" in ty or "Struct_" in ty and not ty in known_structs:
+            if "FIXME" in ty or "/*struct*/" in ty and not ty[11:] in known_structs:
                 print("// ioctl!(%s %s with %s, %s; %s);" % (mp[cmd], name.lower(),
                     translate_type_code(first), second, ty))
             else:
@@ -105,7 +112,7 @@ def process(ioctl):
             second = " ".join(body[2:5])
             ty = body[6:]
             ty = translate(ty)
-            if "FIXME" in ty or "Struct_" in ty and not ty in known_structs:
+            if "FIXME" in ty or "/*struct*/" in ty and not ty[11:] in known_structs:
                 print("// ioctl!(%s %s with %s, %s; %s);" % (mp[cmd], name.lower(),
                     translate_type_code(first), second, ty))
             else:
