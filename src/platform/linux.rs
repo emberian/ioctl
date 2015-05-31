@@ -397,5 +397,9 @@ ioctl!(write eviocgrab with b'E', 0x90; ::libc::c_int);
 ioctl!(write eviocrevoke with b'E', 0x91; ::libc::c_int);
 ioctl!(write eviocsclockid with b'E', 0xa0; ::libc::c_int);
 
+pub unsafe fn eviocgbit(fd: ::libc::c_int, ev: u32, len: ::libc::c_int, buf: *mut u8) -> ::libc::c_int {
+    ::ioctl(fd, ior!(b'E', 0x20 + ev, len) as ::libc::c_ulong, buf)
+}
+
 #[cfg(target_arch = "x86_64")]
 include!("linux-generated-x86_64.rs");
