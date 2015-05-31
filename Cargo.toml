@@ -1,6 +1,6 @@
 [package]
 name = "ioctl"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Corey Richardson <corey@octayn.net>"]
 description = "IO Control for POSIX-and-beyond systems"
 license = "BSL-1.0/Apache-2.0"
