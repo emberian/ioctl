@@ -56,9 +56,9 @@ pub const NRSHIFT: u32 = 0;
 #[doc(hidden)]
 pub const TYPESHIFT: u32 = NRSHIFT + NRBITS as u32;
 #[doc(hidden)]
-pub const SIZESHIFT: u32 = TYPESHIFT + SIZEBITS as u32;
+pub const SIZESHIFT: u32 = TYPESHIFT + TYPEBITS as u32;
 #[doc(hidden)]
-pub const DIRSHIFT: u32 = SIZESHIFT + DIRBITS as u32;
+pub const DIRSHIFT: u32 = SIZESHIFT + SIZEBITS as u32;
 
 #[doc(hidden)]
 pub const NRMASK: u32 = (1 << NRBITS) - 1;
@@ -73,10 +73,10 @@ pub const DIRMASK: u32 = (1 << DIRBITS) - 1;
 #[macro_export]
 macro_rules! ioc {
     ($dir:expr, $ty:expr, $nr:expr, $sz:expr) => (
-        ($dir as u32) << $crate::DIRBITS |
-        ($ty as u32) << $crate::TYPEBITS |
-        ($nr as u32) << $crate::NRSHIFT |
-        ($sz as u32) << $crate::SIZESHIFT)
+        (($dir as u32) << $crate::DIRSHIFT) |
+        (($ty as u32) << $crate::TYPESHIFT) |
+        (($nr as u32) << $crate::NRSHIFT) |
+        (($sz as u32) << $crate::SIZESHIFT))
 }
 
 /// Encode an ioctl command that has no associated data.
