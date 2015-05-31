@@ -997,6 +997,7 @@ ioctl!(readwrite xfs_ioc_thaw with b'X', 120; ::libc::c_int);
 // ioctl!(write xfs_ioc_unresvsp with b'X', 41; /*struct*/ xfs_flock64);
 // ioctl!(write xfs_ioc_unresvsp64 with b'X', 43; /*struct*/ xfs_flock64);
 // ioctl!(write xfs_ioc_zero_range with b'X', 57; /*struct*/ xfs_flock64);
+ioctl!(bad fioclex with 0x5451);
 ioctl!(bad cz_nboards with CZIOC | 0xfa);
 ioctl!(bad cz_boot_start with CZIOC | 0xfb);
 ioctl!(bad cz_boot_data with CZIOC | 0xfc);

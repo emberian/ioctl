@@ -47,7 +47,6 @@
 ['DM_IOCTL', '0xfd', '#']
 ['DRM_IOCTL_BASE', "'d'", '#']
 ['DTV_IOCTL_MAX_MSGS', '64', 'struct']
-['FIOCLEX', '0x5451', '#']
 ['FSL_HV_IOCTL_TYPE', '0xAF', '/* Restart another partition */']
 ['FUSE_IOCTL_MAX_IOV', '256', '/**\n * Poll flags\n *\n * FUSE_POLL_SCHEDULE_NOTIFY: request poll notify\n */']
 ['GIGASET_IOCTL', '0x47', '/* enable/disable device control via character device (lock out ISDN subsys) */']

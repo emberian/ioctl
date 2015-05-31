@@ -1011,3 +1011,4 @@
 ['XFS_IOC_UNRESVSP', '_IOW', '(', "'X'", ',', '41', ',', 'struct', 'xfs_flock64', ')', '#']
 ['XFS_IOC_UNRESVSP64', '_IOW', '(', "'X'", ',', '43', ',', 'struct', 'xfs_flock64', ')', '#']
 ['XFS_IOC_ZERO_RANGE', '_IOW', '(', "'X'", ',', '57', ',', 'struct', 'xfs_flock64', ')', '#']
+['FIOCLEX', '0x5451', '#']
