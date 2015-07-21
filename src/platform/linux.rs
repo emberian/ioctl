@@ -217,9 +217,15 @@ pub struct input_event {
 impl ::std::default::Default for input_event {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
+impl ::std::fmt::Debug for input_event {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "input_event {{ time: {{ tv_sec: {}, tv_usec: {} }}, _type: {}, code: {}, value: {}",
+               self.time.tv_sec, self.time.tv_usec, self._type, self.code, self.value)
+    }
+}
 
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct input_id {
     pub bustype: u16,
     pub vendor: u16,
@@ -271,7 +277,7 @@ impl ::std::default::Default for Union_Unnamed16 {
 }
 
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct input_absinfo {
     pub value: i32,
     pub minimum: i32,
@@ -284,7 +290,7 @@ impl ::std::default::Default for input_absinfo {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct input_keymap_entry {
     pub flags: u8,
     pub len: u8,
@@ -296,7 +302,7 @@ impl ::std::default::Default for input_keymap_entry {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_replay {
     pub length: u16,
     pub delay: u16,
@@ -305,7 +311,7 @@ impl ::std::default::Default for ff_replay {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_trigger {
     pub button: u16,
     pub interval: u16,
@@ -314,7 +320,7 @@ impl ::std::default::Default for ff_trigger {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_envelope {
     pub attack_length: u16,
     pub attack_level: u16,
@@ -325,7 +331,7 @@ impl ::std::default::Default for ff_envelope {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_constant_effect {
     pub level: i16,
     pub envelope: ff_envelope,
@@ -334,7 +340,7 @@ impl ::std::default::Default for ff_constant_effect {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_ramp_effect {
     pub start_level: i16,
     pub end_level: i16,
@@ -344,7 +350,7 @@ impl ::std::default::Default for ff_ramp_effect {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_condition_effect {
     pub right_saturation: u16,
     pub left_saturation: u16,
@@ -357,7 +363,7 @@ impl ::std::default::Default for ff_condition_effect {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 #[allow(raw_pointer_derive)]
 pub struct ff_periodic_effect {
     pub waveform: u16,
@@ -373,7 +379,7 @@ impl ::std::default::Default for ff_periodic_effect {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ff_rumble_effect {
     pub strong_magnitude: u16,
     pub weak_magnitude: u16,
@@ -399,6 +405,10 @@ ioctl!(write eviocsclockid with b'E', 0xa0; ::libc::c_int);
 
 pub unsafe fn eviocgbit(fd: ::libc::c_int, ev: u32, len: ::libc::c_int, buf: *mut u8) -> ::libc::c_int {
     ::ioctl(fd, ior!(b'E', 0x20 + ev, len) as ::libc::c_ulong, buf)
+}
+
+pub unsafe fn eviocgabs(fd: ::libc::c_int, abs: u32, buf: *mut input_absinfo) -> ::libc::c_int {
+    ::ioctl(fd, ior!(b'E', 0x40 + abs, ::std::mem::size_of::<input_absinfo>()) as ::libc::c_ulong, buf)
 }
 
 #[cfg(target_arch = "x86_64")]
